@@ -28,9 +28,9 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
-                        <c:if test="${!empty(errorLogin)}">
+                        <c:if test="${!empty(error)}">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Login fallido!</strong> ${errorLogin}
+                                <strong>Login fallido!</strong> ${error}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         </c:if>
@@ -39,7 +39,7 @@
                         </div>
                     </form>
                     <div class="text-center mt-3">
-                        <p>¿No tienes una cuenta? <a href="/registro.jsp">Registrarse</a></p>
+                        <p>¿No tienes una cuenta? <a href="${pageContext.request.contextPath}/register.jsp">Registrarse</a></p>
                     </div>
                 </div>
             </div>

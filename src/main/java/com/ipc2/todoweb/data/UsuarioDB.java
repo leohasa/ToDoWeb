@@ -16,7 +16,7 @@ public class UsuarioDB {
     public UsuarioDB(Connection conexion) {
         this.conexion = conexion;
     }
-    public void crear(Usuario user) {
+    public boolean crear(Usuario user) {
         String query = "INSERT INTO USUARIO (nombre, username, password) VALUES (?, ?, ?)";
         try (var preparedStatement = conexion.prepareStatement(query)) {
             preparedStatement.setString(1, user.getNombre());
@@ -24,9 +24,11 @@ public class UsuarioDB {
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.executeUpdate();
             System.out.println("Usuario creado");
+            return true;
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
         }
+        return false;
     }
 
     public void actualizar(Usuario user) {
