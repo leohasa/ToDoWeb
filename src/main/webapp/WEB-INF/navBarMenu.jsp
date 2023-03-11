@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse justify-content-start" id="navbarNav1">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Tareas</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/listarTareas">Tareas</a>
                 </li>
             </ul>
         </div>

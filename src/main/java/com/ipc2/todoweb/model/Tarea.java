@@ -12,7 +12,7 @@ public class Tarea {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.prioridad = prioridad;
-        this.fecha_creacion = fecha_creacion;
+        this.fechaCreacion = fecha_creacion;
         this.idUsuario = idUsuario;
         this.idEstado = idEstado;
     }
@@ -21,7 +21,7 @@ public class Tarea {
     private String titulo;
     private String descripcion;
     private int prioridad;
-    private LocalDateTime fecha_creacion;
+    private LocalDateTime fechaCreacion;
     private int idUsuario;
     private int idEstado;
 }

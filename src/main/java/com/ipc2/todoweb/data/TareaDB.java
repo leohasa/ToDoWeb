@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TareaDB {
 
@@ -24,7 +25,7 @@ public class TareaDB {
             preparedStatement.setString(1, tarea.getTitulo());
             preparedStatement.setString(2, tarea.getDescripcion());
             preparedStatement.setInt(3, tarea.getPrioridad());
-            preparedStatement.setString(4, tarea.getFecha_creacion().toString());
+            preparedStatement.setString(4, tarea.getFechaCreacion().toString());
             preparedStatement.setInt(5, tarea.getIdUsuario());
             preparedStatement.setInt(6, tarea.getIdEstado());
             preparedStatement.executeUpdate();
@@ -34,15 +35,14 @@ public class TareaDB {
         }
     }
     public void actualizar(Tarea tarea) {
-        String query = "UPDATE TAREA SET titulo = ?, descripcion = ?, prioridad = ?, fecha_creacion = ?, id_usuario = ?, id_estado = ? WHERE id_tarea = ?";
+        String query = "UPDATE TAREA SET titulo = ?, descripcion = ?, prioridad = ?, id_usuario = ?, id_estado = ? WHERE id_tarea = ?";
         try (var preparedStatement = conexion.prepareStatement(query)) {
             preparedStatement.setString(1, tarea.getTitulo());
             preparedStatement.setString(2, tarea.getDescripcion());
             preparedStatement.setInt(3, tarea.getPrioridad());
-            preparedStatement.setString(4, tarea.getFecha_creacion().toString());
-            preparedStatement.setInt(5, tarea.getIdUsuario());
-            preparedStatement.setInt(6, tarea.getIdEstado());
-            preparedStatement.setInt(7, tarea.getId());
+            preparedStatement.setInt(4, tarea.getIdUsuario());
+            preparedStatement.setInt(5, tarea.getIdEstado());
+            preparedStatement.setInt(6, tarea.getId());
             preparedStatement.executeUpdate();
             System.out.println("Tarea actualizada");
         } catch (SQLException e) {
@@ -84,5 +84,32 @@ public class TareaDB {
             System.out.println("Error al consultar: " + e);
         }
         return tareas;
+    }
+
+    public Optional<Tarea> obtenerById(int id) {
+        String query = "SELECT * FROM TAREA WHERE id_tarea = ?";
+        Tarea tarea = null;
+
+        try (var preparedStatement = conexion.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    var idTarea = resultSet.getInt("id_tarea");
+                    var titulo = resultSet.getString("titulo");
+                    var notas = resultSet.getString("descripcion");
+                    var prioridad = resultSet.getInt("prioridad");
+                    var fecha_creacion = LocalDateTime.parse(resultSet.getString("fecha_creacion"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    var idEstado = resultSet.getInt("id_estado");
+                    var idUsuario = resultSet.getInt("id_usuario");
+
+                    tarea = new Tarea(idTarea, titulo, notas, prioridad, fecha_creacion, idUsuario, idEstado);
+                }
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al consultar: " + e);
+        }
+        return Optional.ofNullable(tarea);
     }
 }
