@@ -28,7 +28,8 @@ public class RegisterServlet extends HttpServlet {
 
         Usuario usuario = new Usuario(nombre, username, password);
         if (usuarioDB.crear(usuario)) {
-            session.setAttribute("user", usuario);
+            Usuario usuarioRegistrado = usuarioDB.obtenerUsuario(username, password).get();
+            session.setAttribute("user", usuarioRegistrado);
             response.sendRedirect("menuPrincipal.jsp");
         } else {
             request.setAttribute("error", "No se pudo registrar");
